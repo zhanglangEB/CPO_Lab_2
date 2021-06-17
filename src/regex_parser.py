@@ -1,8 +1,10 @@
 from regex_fa_construction import *
-from common import sp_chars, Kind
+from common import sp_chars, Kind, element_type
+from typing import Tuple
 
 
-def regex_to_tokens(regex: str):
+@arg_type(0, str)
+def regex_to_tokens(regex: str) -> list:
     """ Convert the regular expression to a token list.
     By analyzing the token list, we can get the semantics of metacharacter in regular expression. """
 
@@ -32,11 +34,10 @@ def regex_to_tokens(regex: str):
     return tokens
 
 
-def add_concat(tokens: list):
+@arg_type(0, list)
+@element_type(0, dict)
+def add_concat(tokens: list) -> None:
     """ Adding concat operation to the regular expression token list """
-    for token in tokens:
-        if not isinstance(token, dict):
-            raise ValueError('The type of elements in list should be dict!')
     concat = {'value': 'concat', 'type': 0, 'kind': Kind.CONCAT}
     con_index = []
     for i in (range(len(tokens) - 1)):
@@ -53,7 +54,8 @@ def add_concat(tokens: list):
         tokens.insert(i, concat)
 
 
-def is_repeat(token: dict):
+@arg_type(0, dict)
+def is_repeat(token: dict) -> bool:
     """ Judge whether the token is a repeated operation """
     if token.get('kind') == Kind.NORMAL:
         if token.get('value') == '*' or token.get('value') == '+':
@@ -64,42 +66,48 @@ def is_repeat(token: dict):
     return False
 
 
-def is_left_bracket(token: dict):
+@arg_type(0, dict)
+def is_left_bracket(token: dict) -> bool:
     """ Judge whether the token is left bracket """
     if token.get('type') == 0 and token.get('value') == '(':
         return True
     return False
 
 
-def is_right_bracket(token: dict):
+@arg_type(0, dict)
+def is_right_bracket(token: dict) -> bool:
     """ Judge whether the token is right bracket """
     if token.get('type') == 0 and token.get('value') == ')':
         return True
     return False
 
 
-def is_concat(token: dict):
+@arg_type(0, dict)
+def is_concat(token: dict) -> bool:
     """ Judge whether the token is concat """
     if token.get('kind') == Kind.CONCAT:
         return True
     return False
 
 
-def is_prefix(token: dict):
+@arg_type(0, dict)
+def is_prefix(token: dict) -> bool:
     """ Judge whether the token is a header match """
     if token.get('type') == 0 and token.get('value') == '^':
         return True
     return False
 
 
-def is_postfix(token: dict):
+@arg_type(0, dict)
+def is_postfix(token: dict) -> bool:
     """ Judge whether the token is a tail match """
     if token.get('type') == 0 and token.get('value') == '$':
         return True
     return False
 
 
-def process_trans(character: str):
+@arg_type(0, str)
+def process_trans(character: str) -> dict:
     """ Process characters after '\' """
     if character in sp_chars:
         d = {'value': character, 'type': 1, 'kind': Kind.NORMAL}
@@ -108,7 +116,8 @@ def process_trans(character: str):
     return d
 
 
-def process_set(substr: str):
+@arg_type(0, str)
+def process_set(substr: str) -> Tuple[int, dict]:
     """ Process characters in '[]' """
     increment = 0
     while substr[increment] != ']': increment += 1
@@ -121,7 +130,8 @@ def process_set(substr: str):
     return increment, d
 
 
-def charset_parser(charset: str):
+@arg_type(0, str)
+def charset_parser(charset: str) -> list:
     """ Analyze the string in '[]' and convert it to token list """
     set_token_lst = []
 
@@ -147,12 +157,12 @@ def charset_parser(charset: str):
         elif charset[i].isalpha() and i + 2 < len(charset) and charset[i + 1] == '-':
             alp_nfa.execute(charset[i:i + 3])
             if alp_nfa.is_matched():
-                d = {'type': 'alpha_' + Kind.RANGE, Kind.RANGE: [charset[i], charset[i + 2]]}
+                d = {'type': 'alpha_' + Kind.RANGE, Kind.RANGE: [charset[i], charset[i + 2]]} # type: ignore
                 i += 2
         elif charset[i].isdigit() and i + 2 < len(charset) and charset[i + 1] == '-':
             dig_nfa.execute(charset[i:i + 3])
             if dig_nfa.is_matched():
-                d = {'type': 'digit_' + Kind.RANGE, Kind.RANGE: [int(charset[i]), int(charset[i + 2])]}
+                d = {'type': 'digit_' + Kind.RANGE, Kind.RANGE: [int(charset[i]), int(charset[i + 2])]} # type: ignore
                 i += 2
         else:
             d = {'type': Kind.NORMAL, 'value': charset[i]}
@@ -161,7 +171,8 @@ def charset_parser(charset: str):
     return set_token_lst
 
 
-def process_range(substr: str):
+@arg_type(0, str)
+def process_range(substr: str) -> Tuple[int, dict]:
     """ Process repeated operation with '{}' """
     increment = 0
     while substr[increment] != '}': increment += 1

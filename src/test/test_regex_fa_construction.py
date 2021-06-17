@@ -14,6 +14,7 @@ class RegexFaConstructionTest(unittest.TestCase):
         nfa1.extend_nodes(nfa2.get_node_list())
         self.assertEqual(nfa1.get_node_list(), nfa2.get_node_list())
         self.assertRaises(TypeError, lambda: nfa1.extend_nodes([1, 2, 3]))
+        self.assertRaises(TypeError, lambda: nfa1.extend_nodes(0))
 
     def test_get_node_list(self):
         nfa = RegexFaConstruction('nfa')
@@ -36,6 +37,7 @@ class RegexFaConstructionTest(unittest.TestCase):
         nfa = RegexFaConstruction('nfa')
         nfa.add_normal_node(nfa.input_port, nfa.output_port, 'a')
         nfa.set_input_node('new_name')
+        self.assertRaises(TypeError, lambda: nfa.set_input_node(1))
         self.assertEqual(nfa.get_input_node(), None)
         nodes = nfa.get_node_list()
         self.assertEqual('new_name' in nodes[0].inputs, True)
@@ -59,6 +61,7 @@ class RegexFaConstructionTest(unittest.TestCase):
     def test_add_da_node(self):
         nfa = RegexFaConstruction('nfa')
         nfa.add_da_node(nfa.input_port, nfa.output_port)
+        self.assertRaises(TypeError, lambda: nfa.add_da_node(nfa.input_port, 1))
         nfa.execute('a')
         self.assertEqual(nfa.is_matched(), True)
         nfa.execute('1')

@@ -17,6 +17,7 @@ class RegexParserTest(unittest.TestCase):
                  'charset': [{'type': 'alpha_range', 'range': ['a', 'z']},
                              {'type': 'trans', 'value': 'w'}, {'type': 'digit_range', 'range': [0, 9]}]}
         self.assertEqual(d, act_d)
+        self.assertRaises(TypeError, lambda: process_set(None))
 
     def test_process_range(self):
         inc, d = process_range('{5}')
@@ -27,6 +28,7 @@ class RegexParserTest(unittest.TestCase):
         self.assertEqual(d, {'value': '{3,5}', 'type': 0, 'kind': 'range', 'range': [3, 5]})
         inc, d = process_range('{,5}')
         self.assertEqual(d, {'value': '{,5}', 'type': 0, 'kind': 'range', 'range': [0, 5]})
+        self.assertRaises(TypeError, lambda: process_range(None))
 
     def test_charset_parser(self):
         charset = r'\w\.%-A-Za-z0-9'
@@ -39,6 +41,7 @@ class RegexParserTest(unittest.TestCase):
                    {'type': 'alpha_range', 'range': ['a', 'z']},
                    {'type': 'digit_range', 'range': [0, 9]}]
         self.assertEqual(lst, act_lst)
+        self.assertRaises(TypeError, lambda: charset_parser(None))
 
     def test_regex_to_tokens(self):
         regex = r'(ab)*[^0-9]+\w\s{2,8}{2,}ac{,8}b{6}'
@@ -70,6 +73,7 @@ class RegexParserTest(unittest.TestCase):
                       {'value': '{6}', 'type': 0, 'kind': 'range', 'range': [6, 6]}]
 
         self.assertEqual(tokens, act_tokens)
+        self.assertRaises(TypeError, lambda: regex_to_tokens(None))
 
     def test_add_concat(self):
         tokens = [{'value': 'a', 'type': 1, 'kind': 'normal'},
@@ -86,6 +90,7 @@ class RegexParserTest(unittest.TestCase):
                        'neg-charset': [{'type': 'normal', 'value': '^'},
                                        {'type': 'digit_range', 'range': [0, 9]}]}]
         self.assertEqual(tokens, act_tokens)
+        self.assertRaises(TypeError, lambda: add_concat(None))
 
 
 if __name__ == '__main__':

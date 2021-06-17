@@ -7,6 +7,7 @@ class RegexToNfaTest(unittest.TestCase):
 
     def test_repeat_nfa(self):
         nfa = RegexFaConstruction('nfa')
+        self.assertRaises(TypeError, lambda: repeat_nfa(1, 2))
         self.assertRaises(ValueError, lambda: repeat_nfa(nfa, 2))
         nfa.add_normal_node(nfa.input_port, '0', 'w')
         nfa.add_normal_node('0', '1', 'x')
@@ -19,6 +20,7 @@ class RegexToNfaTest(unittest.TestCase):
 
     def test_repeat_or_output_nfa(self):
         nfa = RegexFaConstruction('nfa')
+        self.assertRaises(TypeError, lambda: repeat_or_output_nfa(1, 2))
         self.assertRaises(ValueError, lambda: repeat_or_output_nfa(nfa, 2))
         nfa.add_normal_node(nfa.input_port, '0', 'w')
         nfa.add_normal_node('0', '1', 'x')
@@ -31,6 +33,7 @@ class RegexToNfaTest(unittest.TestCase):
 
     def test_nodes_repeat_ge_zero(self):
         nfa = RegexFaConstruction('nfa')
+        self.assertRaises(TypeError, lambda: nodes_repeat_ge_zero(1, 2))
         self.assertRaises(ValueError, lambda: nodes_repeat_ge_zero(nfa, 0))
         nfa.add_normal_node(nfa.input_port, nfa.output_port, 'a')
         nfa, inc = nodes_repeat_ge_zero(nfa, 0)
@@ -43,6 +46,7 @@ class RegexToNfaTest(unittest.TestCase):
 
     def test_nodes_repeat_ge_one(self):
         nfa = RegexFaConstruction('nfa')
+        self.assertRaises(TypeError, lambda: nodes_repeat_ge_one(1, 2))
         self.assertRaises(ValueError, lambda: nodes_repeat_ge_one(nfa, 0))
         nfa.add_normal_node(nfa.input_port, nfa.output_port, 'a')
         nfa, inc = nodes_repeat_ge_one(nfa, 0)
@@ -55,6 +59,7 @@ class RegexToNfaTest(unittest.TestCase):
 
     def test_nodes_repeat_eq(self):
         nfa = RegexFaConstruction('nfa')
+        self.assertRaises(TypeError, lambda: nodes_repeat_eq(1, 2))
         self.assertRaises(ValueError, lambda: nodes_repeat_eq(nfa, 3))
         nfa.add_normal_node(nfa.input_port, nfa.output_port, 'a')
         nfa = nodes_repeat_eq(nfa, 3)
@@ -69,6 +74,7 @@ class RegexToNfaTest(unittest.TestCase):
 
     def test_nodes_repeat_range(self):
         nfa = RegexFaConstruction('nfa')
+        self.assertRaises(TypeError, lambda: nodes_repeat_range(1, 0, 2, 5))
         self.assertRaises(ValueError, lambda: nodes_repeat_range(nfa, 0, 1, 3))
         nfa.add_normal_node(nfa.input_port, nfa.output_port, 'a')
         nfa, inc = nodes_repeat_range(nfa, 0, 1, 3)
@@ -85,6 +91,7 @@ class RegexToNfaTest(unittest.TestCase):
 
     def test_nodes_prefix(self):
         nfa = RegexFaConstruction('nfa')
+        self.assertRaises(TypeError, lambda: nodes_prefix(1, 2))
         self.assertRaises(ValueError, lambda: nodes_prefix(nfa, 0))
         nfa.add_normal_node(nfa.input_port, 'n1', 'a')
         nfa.add_normal_node('n1', nfa.output_port, 'b')
@@ -98,6 +105,7 @@ class RegexToNfaTest(unittest.TestCase):
 
     def test_nodes_postfix(self):
         nfa = RegexFaConstruction('test')
+        self.assertRaises(TypeError, lambda: nodes_postfix(1, 2))
         self.assertRaises(ValueError, lambda: nodes_postfix(nfa, 0))
         nfa.add_normal_node(nfa.input_port, 'n1', 'a')
         nfa.add_normal_node('n1', nfa.output_port, 'b')
@@ -109,6 +117,7 @@ class RegexToNfaTest(unittest.TestCase):
 
     def test_regex_to_nfa(self):
         regex = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$'
+        self.assertRaises(TypeError, lambda: regex_to_nfa(1))
         nfa = regex_to_nfa(regex)
         nfa.execute('wangxin@hdu.edu.com')
         self.assertEqual(nfa.get_matched_str(), 'wangxin@hdu.edu.com')

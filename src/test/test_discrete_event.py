@@ -13,7 +13,7 @@ class DiscreteEventTest(unittest.TestCase):
         n.output("B", latency=1)
         m.execute(
             source_event("A", True, 0),
-            source_event("A", False, 5),
+            source_event("A", False, 5)
         )
         self.assertEqual(m.state_history, [
             (0, {'A': None}),
@@ -28,6 +28,7 @@ class DiscreteEventTest(unittest.TestCase):
             event(clock=7, node=n, var='A', val=False),
             event(clock=9, node=None, var='B', val=True),
         ])
+        self.assertRaises(TypeError, lambda: m.add_node('test', None))
 
 
 class NodeTest(unittest.TestCase):

@@ -1,7 +1,10 @@
 from regex_to_nfa import regex_to_nfa
+from typing import Optional
+from common import arg_type
 
 
-def match(regex: str, text: str):
+@arg_type([0, 1], [str, str])
+def match(regex: str, text: str) -> Optional[tuple]:
     """ Try to match a pattern from the beginning of the string.
     If the match is not successful at the beginning, match() returns none. """
     nfa = regex_to_nfa(regex)
@@ -12,7 +15,8 @@ def match(regex: str, text: str):
     return None
 
 
-def search(regex: str, text: str):
+@arg_type([0, 1], [str, str])
+def search(regex: str, text: str) -> Optional[tuple]:
     """ Scan the entire string and return the first successful match. """
     nfa = regex_to_nfa(regex)
     if regex[0] == '^':
@@ -29,7 +33,8 @@ def search(regex: str, text: str):
     return None
 
 
-def sub(regex: str, repl: str, text: str, count=0):
+@arg_type([0, 1, 2], [str, str, str])
+def sub(regex: str, repl: str, text: str, count: int = 0) -> str:
     """ Replace matches in string """
     nfa = regex_to_nfa(regex)
     repl_len = len(repl)
@@ -54,7 +59,8 @@ def sub(regex: str, repl: str, text: str, count=0):
     return res
 
 
-def split(regex: str, text: str, maxsplit=0):
+@arg_type([0, 1], [str, str])
+def split(regex: str, text: str, maxsplit: int = 0) -> list:
     """ The method divides the string according to the substring that can be matched and returns the list """
     nfa = regex_to_nfa(regex)
     res_lst = []

@@ -8,6 +8,7 @@ class RegexLibTest(unittest.TestCase):
     def test_match(self):
         regex = '[0-9]+'
         text = '1324354657'
+        self.assertRaises(TypeError, lambda: match(0, 1))
         self.assertEqual(match(regex, text), (0, len(text)))
         text = 'hello itmo'
         self.assertEqual(match(regex, text), None)
@@ -19,6 +20,7 @@ class RegexLibTest(unittest.TestCase):
     def test_search(self):
         regex = '[0-9]+'
         text = 'hello1324354657itmo'
+        self.assertRaises(TypeError, lambda: search(0, 1))
         self.assertEqual(search(regex, text), (5, 15))
         text = 'hello itmo'
         self.assertEqual(search(regex, text), None)
@@ -30,6 +32,7 @@ class RegexLibTest(unittest.TestCase):
     def test_sub(self):
         regex = r' #.*$'
         text = '2004-959-559 # this is a phone number'
+        self.assertRaises(TypeError, lambda: sub(0, 1, 2))
         self.assertEqual(sub(regex, "", text, 1), '2004-959-559')
         text = '2004-959-559'
         self.assertEqual(sub('-', "", text, 1), '2004959-559')
@@ -37,6 +40,7 @@ class RegexLibTest(unittest.TestCase):
     def test_split(self):
         regex = r'\w+'
         text = 'wxx，wxx，wxx，wxx，wxx'
+        self.assertRaises(TypeError, lambda: split(0, 1))
         self.assertEqual(split(regex, text), ['', '，', '，', '，', '，', ''])
         self.assertEqual(split(regex, text, 1), ['', '，wxx，wxx，wxx，wxx'])
         regex = r'^wxx'
