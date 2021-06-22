@@ -1,7 +1,0 @@
-.hypothesis/
-.idea/
-.pytest_cache/
-*/__pycache__/
-.DS_Store
-*/.DS_Store
-.mypy_cache/
